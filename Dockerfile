@@ -13,7 +13,7 @@ RUN apt-get update && \
     --enable-security-cert-generators --enable-ssl-crtd --with-openssl --disable-ipv6 && \
     make -j 8 && \
     make install && \
-    chmod 777 /opt/squid/var/logs/ && \
+    chown nobody:nogroup /opt/squid/var/logs/ && \
     /opt/squid/libexec/security_file_certgen -c -s /opt/squid/var/cache/squid/ssl_db -M 1000 && \
     apt-get purge -y --autoremove build-essential curl libssl-dev && \
     rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/* /squid-4.10.tar.xz /squid-4.10
