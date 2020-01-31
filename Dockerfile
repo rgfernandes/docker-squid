@@ -21,6 +21,7 @@ RUN apk add --no-progress -t build-dependencies \
     chown nobody:nogroup /opt/squid/var/logs/ && \
     /opt/squid/libexec/security_file_certgen -c -s /opt/squid/var/cache/squid/ssl_db -M 1000 && \
     apk del build-dependencies && \
+    apk add libstdc++ && \
     rm -rf /var/cache/apk/* /squid-4.10.tar.xz /squid-4.10
 
 EXPOSE 3128/tcp
