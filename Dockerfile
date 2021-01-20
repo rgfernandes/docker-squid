@@ -1,6 +1,7 @@
-FROM alpine:3.11
+FROM alpine:3.13
 
-RUN apk add --no-progress -t build-dependencies \
+RUN export SQUID_VERSION=4.13 && \
+    apk add --no-progress -t build-dependencies \
     file \
     gcc \
     g++ \
@@ -8,9 +9,9 @@ RUN apk add --no-progress -t build-dependencies \
     perl \
     openssl-dev \
     curl && \
-    curl http://www.squid-cache.org/Versions/v4/squid-4.10.tar.xz -o squid-4.10.tar.xz && \
-    tar xvfJ squid-4.10.tar.xz && \
-    cd squid-4.10 && \
+    curl http://www.squid-cache.org/Versions/v4/squid-${SQUID_VERSION}.tar.xz -o squid-${SQUID_VERSION}.tar.xz && \
+    tar xvfJ squid-${SQUID_VERSION}.tar.xz && \
+    cd squid-${SQUID_VERSION} && \
     ./configure --prefix=/opt/squid --sysconfdir=/etc/squid --disable-dependency-tracking \
     --enable-xmalloc-statistics --enable-icmp --enable-delay-pools --enable-auth \
     --enable-auth-basic --enable-auth-digest --enable-auth-negotiate --enable-auth-ntlm \
@@ -22,7 +23,7 @@ RUN apk add --no-progress -t build-dependencies \
     /opt/squid/libexec/security_file_certgen -c -s /opt/squid/var/cache/squid/ssl_db -M 1000 && \
     apk del build-dependencies && \
     apk add libstdc++ && \
-    rm -rf /var/cache/apk/* /squid-4.10.tar.xz /squid-4.10
+    rm -rf /var/cache/apk/* /squid-${SQUID_VERSION}.tar.xz /squid-${SQUID_VERSION}
 
 EXPOSE 3128/tcp
 
